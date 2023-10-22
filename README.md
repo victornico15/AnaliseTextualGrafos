@@ -6,4 +6,13 @@ A análise textual é um campo da linguística e da ciência da computação que
 
 #rodar o codigo
 
-javac -classpath /caminho/para/mallet-2.0.8/lib/mallet.jar AnaliseTextual.java
+javac -cp ".:mallet.jar:mallet-deps.jar" AnaliseTextual.java
+java -cp ".:mallet.jar:mallet-deps.jar" AnaliseTextual
+
+
+caso tenha necessidade para alterar os documentos tanto em csv tanto em txt para fazer alguns testes em outros tipos de teste segue os comandos, lembrando sempre esteja no Path principal onde esta o mallet.jar:
+
+java -cp "mallet.jar:mallet-deps.jar" cc.mallet.classify.tui.Text2Vectors --input ./exemplos --output exemplos.mallet
+
+
+java -cp "mallet.jar:mallet-deps.jar" cc.mallet.classify.tui.Csv2Vectors --input ./exemplos/exemplos.csv --output exemplos.mallet
