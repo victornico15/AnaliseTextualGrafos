@@ -1,17 +1,36 @@
+import cc.mallet.pipe.*;
+import cc.mallet.pipe.iterator.*;
 import cc.mallet.topics.*;
 import cc.mallet.types.*;
 import java.io.*;
+import java.util.*;
+import java.util.regex.*;
 
 public class AnaliseTextual {
 
     public static void main(String[] args) throws Exception {
-        // Lê o arquivo mallet
-        InstanceList instances = InstanceList.load(new File("exemplos.mallet"));
+        // Pipes: lowercase, tokenize, remove stopwords, map to features
+        ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
+        pipeList.add(new CharSequenceLowercase());
+        pipeList.add(new CharSequence2TokenSequence(Pattern.compile("\\p{L}[\\p{L}\\p{P}]+\\p{L}")));
+        pipeList.add(new TokenSequenceRemoveStopwords(new File("stoplists/pt.txt"), "UTF-8", false, false, false));
+        pipeList.add(new TokenSequence2FeatureSequence());
 
-        // Imprime o alfabeto de dados para depuração
-        System.out.println("Alfabeto de dados: " + instances.getDataAlphabet());
+        InstanceList instances = new InstanceList(new SerialPipes(pipeList));
 
-        // Cria e estima um modelo LDA
+        // Directory containing the text files
+        File directory = new File("exemplos");
+        File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
+        
+        if (files != null) {
+            for (File file : files) {
+                // Read and process each text file in the directory
+                Reader fileReader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+                instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(.*)$"), 1, -1, -1)); // assuming one document per line
+            }
+        }
+
+        // The rest of your existing code to create and estimate the LDA model...
         int numTopics = 3;
         ParallelTopicModel model = new ParallelTopicModel(numTopics);
         model.addInstances(instances);
@@ -19,7 +38,7 @@ public class AnaliseTextual {
         model.setNumIterations(1000);
         model.estimate();
 
-        // Imprime as palavras-chave para cada tópico
+        // Print the keywords for each topic...
         Object[][] topicWords = model.getTopWords(10);
         for (int topic = 0; topic < numTopics; topic++) {
             System.out.println("Tópico " + topic + ":");
