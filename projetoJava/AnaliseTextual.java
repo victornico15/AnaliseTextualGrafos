@@ -9,6 +9,7 @@ import java.util.regex.*;
 public class AnaliseTextual {
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Estou aqui");
         // Pipes: lowercase, tokenize, remove stopwords, map to features
         ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
         pipeList.add(new CharSequenceLowercase());
@@ -47,5 +48,35 @@ public class AnaliseTextual {
             }
             System.out.println();
         }
+
+        System.out.println("fim");
+
+
+        Node a = new Node("A");
+	    Node b = new Node("B");
+	    Node c = new Node("C");
+	    Node d = new Node("D");
+	    Node e = new Node("E");
+        
+
+
+        ArrayList<Node> list = new ArrayList<Node>();
+	    list.add(a);
+	    list.add(b);
+	    list.add(c);
+	    list.add(d);
+	    list.add(e);
+
+        Graph g = new Graph(list);
+        
+        g.addEdge(a, e);
+	    g.addEdge(a, d);
+	    g.addEdge(d, e);
+	    g.addEdge(b, e);
+	    g.addEdge(b, c);
+
+        System.out.println("Adjacency List: ");
+	    g.printAdjList();
+	    
     }
 }
