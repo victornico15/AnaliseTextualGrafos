@@ -5,10 +5,8 @@ A análise textual é um campo da linguística e da ciência da computação que
 
 
 #para rodar o codigo precisa estar na pasta projetoJava e dar os seguintes comandos
-
-javac -cp ".:mallet.jar:mallet-deps.jar" AnaliseTextual.java
-java -cp ".:mallet.jar:mallet-deps.jar" AnaliseTextual
-
+javac -cp ".:mallet.jar:mallet-deps.jar:jgrapht-core-1.5.2.jar" AnaliseTextual.java
+java -cp ".:mallet.jar:mallet-deps.jar:jgrapht-core-1.5.2.jar" AnaliseTextual.java
 
 
 o codigo tem que objetivo de fazer as stopwords,tokenizacao, e peso dentros dos Nós para cada palavra de analisetextual dentro do grafo.
